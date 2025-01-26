@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: housing-api
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://kevin:KV1292005@db:5432/housing_db  # Toujours utiliser 5432 dans l'URL
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    container_name: housing-db
+    environment:
+      POSTGRES_USER: kevin
+      POSTGRES_PASSWORD: KV1292005
+      POSTGRES_DB: housing_db
+    ports:
+      - "5433:5432"  # Modification : utiliser le port 5433 pour la machine hôte
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
